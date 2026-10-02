@@ -386,6 +386,8 @@ class Installer:
     def run(self):
         print(f"{'APPLY' if self.apply else 'DRY RUN'}  config folder: {self.cfg}")
         print(f"Extras: {', '.join(self.extras) if self.extras else '(none)'}")
+        print("Compaction: " + ("fast-jev-compaction (replaces the built-in one)" if "fast-jev" in self.extras
+                                else "Claude Code's default (recommended; nothing to install)"))
         # Refuse early, before anything is written.
         read_json(self.cfg / "settings.json")
         if self.claude:
@@ -414,11 +416,13 @@ def main():
     extras_all = list(manifest["extras"])
     if args.list_extras:
         for name, e in manifest["extras"].items():
-            print(f"{name}: {e['description']}")
+            note = "  [ask separately; never part of 'all']" if e.get("explicit_only") else ""
+            print(f"{name}: {e['description']}{note}")
         return 0
     wanted = [x.strip() for x in args.with_.split(",") if x.strip()]
     if "all" in wanted:
-        wanted = extras_all
+        # "all" never includes extras marked explicit_only (fast-jev): those must be named on purpose.
+        wanted = [x for x in extras_all if not manifest["extras"][x].get("explicit_only")] + [x for x in wanted if x in extras_all]
     unknown = [x for x in wanted if x not in extras_all]
     if unknown:
         print(f"Unknown extra(s): {', '.join(unknown)}. Known: {', '.join(extras_all)}", file=sys.stderr)

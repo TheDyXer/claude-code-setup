@@ -10,6 +10,7 @@ report honestly.
 - Do **not** edit `settings.json`, `.claude.json` or `CLAUDE.md` by hand. Only `install.py` does that.
 - Never ask the user to paste a key, token or password into the chat, and never print one. Anything
   that needs a secret is a manual step the user does themselves (step 8).
+- Never install `fast-jev-compaction` unless the user explicitly chose it in question 1 of step 3.
 - Do not use `--on-conflict overwrite` unless the user asks for it after seeing what would be replaced.
 - Do not delete or move anything outside the temp clone.
 - If a step fails, say what failed and show the installer's own message. Do not retry blindly.
@@ -48,21 +49,38 @@ cd $dir
 
 (If the folder is already there from an earlier run, this updates it instead of failing.)
 
-## 3. Ask which extras they want
+## 3. Ask the compaction question first, then the other extras
+
+**Question 1: compaction. Always ask this one, and ask it first, even if the user says "install
+everything".** Use AskUserQuestion with exactly these two options, in this order (if you don't
+have that tool, ask in plain text with the same two options, recommended one first):
+
+1. **Claude Code's default compaction (Recommended).** Nothing to install; Claude Code compacts
+   long conversations itself.
+2. **Install fast-jev-compaction.** Replaces the built-in compaction with TypeSafe's, triggered at
+   40% of the context window. It needs a TypeSafe API key that the user must get and set
+   themselves; without one it does nothing useful.
+
+The first option is the default. If the user does not answer or is unsure, keep the default.
+Add `fast-jev` to `--with` **only** if the user explicitly picks option 2.
+
+**Question 2: the other extras.**
 
 ```powershell
 python install.py --list-extras
 ```
 
 The core set (24 skills, 2 rules, 3 plugins, 3 MCP servers, a few preferences) is always
-installed. Ask the user which extras they want, using AskUserQuestion with multi-select if you
-have it, and explain each in one plain sentence from the list. Point out:
+installed. Ask which of the remaining extras they want, using AskUserQuestion with multi-select if
+you have it, and explain each in one plain sentence from the list. Leave `fast-jev` out of this
+question; it was question 1. Point out:
 
 - `claude-mem` records their session activity in a local database.
-- `fast-jev` and `github-mcp` need a sign-in or key that **they** set up afterwards.
+- `github-mcp` needs a GitHub token that **they** create and set afterwards.
 - `model-prefs` and `advisor` assume their plan offers those models.
 
-"All of them" is a fine answer: use `--with all`.
+"All of them" is a fine answer for this question: use `--with all`. `all` never includes
+`fast-jev`, so name it explicitly (`--with all,fast-jev`) only if they picked it in question 1.
 
 ## 4. Dry run
 
@@ -70,9 +88,11 @@ have it, and explain each in one plain sentence from the list. Point out:
 python install.py --with claude-mem,statusline        # their chosen extras, or: --with all
 ```
 
-It changes nothing and prints each action: `+ add` (new), `= ok` (already there), `~ kept`
-(they have something different; yours is kept), `! FAILED`. Show the user a short summary:
-how many items to add, anything marked `kept`, and anything `FAILED`.
+It changes nothing. The first lines say which compaction is in use ("Compaction: Claude Code's
+default" or "fast-jev-compaction"); check it matches the user's answer to question 1. Then it
+prints each action: `+ add` (new), `= ok` (already there), `~ kept` (they have something
+different; theirs is kept), `! FAILED`. Show the user a short summary: how many items to add,
+anything marked `kept`, and anything `FAILED`.
 
 ## 5. Get the go-ahead
 

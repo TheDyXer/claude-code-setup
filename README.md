@@ -8,11 +8,12 @@ ready-made collection of plugins, skills, MCP servers and preferences. Windows.
 Paste this into Claude Code:
 
 ```text
-Set up my Claude Code from https://github.com/TheDyXer/claude-code-setup. Clone it to a temp folder, read INSTALL.md and follow it exactly: check what I have installed, run the installer as a dry run first and show me the plan, ask me which optional extras I want, and only apply it after I say yes.
+Set up my Claude Code from https://github.com/TheDyXer/claude-code-setup. Clone it to a temp folder, read INSTALL.md and follow it exactly: check what I have installed, ask me whether to keep Claude Code's default compaction (recommended) or install fast-jev-compaction, ask me which other optional extras I want, run the installer as a dry run first and show me the plan, and only apply it after I say yes.
 ```
 
-That's all. Claude shows you what it is about to change before it changes anything, and asks you
-about the optional parts.
+That's all. Claude first asks whether you want to keep Claude Code's default compaction
+(recommended) or install fast-jev-compaction, then asks about the other optional parts, and shows
+you what it is about to change before it changes anything.
 
 ## What you get
 
@@ -32,7 +33,7 @@ about the optional parts.
 | Extra | What it is |
 |---|---|
 | `claude-mem` | Memory across sessions. Runs a local background worker and keeps its database on your machine. |
-| `fast-jev` | Compacts long conversations early. Needs your own TypeSafe API key. |
+| `fast-jev` | Replaces Claude Code's built-in compaction. Asked about separately and never part of "all"; the default compaction is recommended. Needs your own TypeSafe API key. |
 | `unity` | Unity's agent plugin (beta). Only useful for Unity projects. |
 | `github-mcp` | GitHub's hosted MCP server. You create a GitHub token and set it as an environment variable yourself. |
 | `statusline` | A pace-aware status line, from [claude-statusline](https://github.com/TheDyXer/claude-statusline). |

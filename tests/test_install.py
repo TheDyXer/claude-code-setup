@@ -122,6 +122,19 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(len(saved), 1)
         self.assertEqual(saved[0].read_text(encoding="utf-8"), "my own animate skill\n")
 
+    def test_all_never_includes_fast_jev_but_naming_it_does(self):
+        r = self.run_install("--with", "all", "--apply")
+        self.assertIn("Compaction: Claude Code's default", r.stdout)
+        settings = json.loads((self.cfg / "settings.json").read_text(encoding="utf-8"))
+        self.assertNotIn("CLAUDE_CODE_ENABLE_FUNCTION_HOOKS", settings.get("env", {}))
+        self.assertNotIn("pluginConfigs", settings)
+        r = self.run_install("--with", "fast-jev", "--apply")
+        self.assertIn("Compaction: fast-jev-compaction", r.stdout)
+        settings = json.loads((self.cfg / "settings.json").read_text(encoding="utf-8"))
+        self.assertEqual(settings["env"]["CLAUDE_CODE_ENABLE_FUNCTION_HOOKS"], "1")
+        r = self.run_install("--with", "all,fast-jev")
+        self.assertIn("Compaction: fast-jev-compaction", r.stdout)
+
     def test_unknown_extra_is_rejected(self):
         r = self.run_install("--with", "nope")
         self.assertEqual(r.returncode, 2)

@@ -116,7 +116,7 @@
       "manual": "claude-mem starts its background worker on your first session after a restart. Its memory stays on your machine."
     },
     "fast-jev": {
-      "description": "fast-jev-compaction: compacts long conversations at 40% context. Needs a TypeSafe API key that you set yourself.",
+      "description": "fast-jev-compaction: replaces Claude Code's built-in compaction with TypeSafe's, triggered at 40% context. Needs a TypeSafe API key you set yourself. NOT recommended by default: Claude Code's own compaction needs nothing.",
       "marketplaces": [
         {
           "name": "fast-jev-compaction",
@@ -136,7 +136,8 @@
           "fast-jev-compaction@fast-jev-compaction"
         ]
       ],
-      "manual": "fast-jev-compaction needs your own TypeSafe API key: set the TYPESAFE_API_KEY environment variable, or the plugin's apiKey option. Without one, turn it off with: claude plugin disable fast-jev-compaction@fast-jev-compaction. It needs a full Claude Code restart."
+      "manual": "fast-jev-compaction needs your own TypeSafe API key: set the TYPESAFE_API_KEY environment variable, or the plugin's apiKey option. Without one, turn it off with: claude plugin disable fast-jev-compaction@fast-jev-compaction. It needs a full Claude Code restart.",
+      "explicit_only": true
     },
     "unity": {
       "description": "Unity Technologies' agent plugin (beta). Only useful if you work on Unity projects.",
