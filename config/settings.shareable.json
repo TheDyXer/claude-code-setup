@@ -1,0 +1,41 @@
+{
+  "core": {
+    "theme": "auto",
+    "autoUpdatesChannel": "latest",
+    "askUserQuestionTimeout": "never",
+    "env": {
+      "IMPECCABLE_NO_TELEMETRY": "1"
+    },
+    "enabledPlugins": {
+      "cc-plugin-you-should-know@builtin": true
+    }
+  },
+  "extras": {
+    "fast-jev": {
+      "env": {
+        "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS": "1"
+      },
+      "pluginConfigs": {
+        "fast-jev-compaction@fast-jev-compaction": {
+          "options": {
+            "compactAtPercent": 40
+          }
+        }
+      }
+    },
+    "model-prefs": {
+      "model": "sonnet",
+      "modelSettings": {
+        "claude-opus-5-5": {
+          "effortLevel": "xhigh"
+        },
+        "claude-sonnet-5-5": {
+          "effortLevel": "xhigh"
+        }
+      }
+    },
+    "advisor": {
+      "advisorModel": "fable"
+    }
+  }
+}

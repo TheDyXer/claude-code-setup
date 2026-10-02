@@ -1,0 +1,222 @@
+{
+  "name": "claude-code-setup",
+  "token": "{{CLAUDE_HOME}}",
+  "core": {
+    "rules": [
+      "context7.md",
+      "frontend-skills.md"
+    ],
+    "skills": [
+      "animate",
+      "api-design",
+      "apple-design",
+      "database-migrations",
+      "domain-modeling",
+      "emil-design-eng",
+      "frontend-design",
+      "grill-me",
+      "grill-with-docs",
+      "grilling",
+      "improve-animations",
+      "minimal-patch",
+      "no-ai-slop",
+      "performance-profiling",
+      "release-workflow",
+      "repo-analysis",
+      "requirements-clarity",
+      "review-animations",
+      "security-review",
+      "spec",
+      "ui-ux-pro-max",
+      "unity-mcp-skill",
+      "vercel-react-best-practices",
+      "web-design-guidelines"
+    ],
+    "marketplaces": [
+      {
+        "name": "claude-plugins-official",
+        "repo": "anthropics/claude-plugins-official"
+      },
+      {
+        "name": "impeccable",
+        "repo": "pbakaus/impeccable"
+      },
+      {
+        "name": "cloudflare",
+        "repo": "cloudflare/skills"
+      }
+    ],
+    "plugins": [
+      "superpowers@claude-plugins-official",
+      "impeccable@impeccable",
+      "cloudflare@cloudflare"
+    ],
+    "mcp": [
+      {
+        "name": "playwright",
+        "transport": "stdio",
+        "command": "npx",
+        "args": [
+          "-y",
+          "@playwright/mcp@latest"
+        ]
+      },
+      {
+        "name": "chrome-devtools",
+        "transport": "stdio",
+        "command": "npx",
+        "args": [
+          "-y",
+          "chrome-devtools-mcp@latest",
+          "--no-usage-statistics",
+          "--no-performance-crux"
+        ]
+      },
+      {
+        "name": "context7-public",
+        "transport": "http",
+        "url": "https://mcp.context7.com/mcp"
+      }
+    ],
+    "settings": [
+      [
+        "theme"
+      ],
+      [
+        "autoUpdatesChannel"
+      ],
+      {
+        "path": [
+          "askUserQuestionTimeout"
+        ],
+        "value": "never"
+      },
+      [
+        "env",
+        "IMPECCABLE_NO_TELEMETRY"
+      ],
+      [
+        "enabledPlugins",
+        "cc-plugin-you-should-know@builtin"
+      ]
+    ]
+  },
+  "extras": {
+    "claude-mem": {
+      "description": "Persistent memory across sessions. Runs a local background worker and records your session activity in a local database.",
+      "marketplaces": [
+        {
+          "name": "thedotmack",
+          "repo": "thedotmack/claude-mem"
+        }
+      ],
+      "plugins": [
+        "claude-mem@thedotmack"
+      ],
+      "manual": "claude-mem starts its background worker on your first session after a restart. Its memory stays on your machine."
+    },
+    "fast-jev": {
+      "description": "fast-jev-compaction: compacts long conversations at 40% context. Needs a TypeSafe API key that you set yourself.",
+      "marketplaces": [
+        {
+          "name": "fast-jev-compaction",
+          "repo": "tamaratran/fast-jev-compaction"
+        }
+      ],
+      "plugins": [
+        "fast-jev-compaction@fast-jev-compaction"
+      ],
+      "settings": [
+        [
+          "env",
+          "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS"
+        ],
+        [
+          "pluginConfigs",
+          "fast-jev-compaction@fast-jev-compaction"
+        ]
+      ],
+      "manual": "fast-jev-compaction needs your own TypeSafe API key: set the TYPESAFE_API_KEY environment variable, or the plugin's apiKey option. Without one, turn it off with: claude plugin disable fast-jev-compaction@fast-jev-compaction. It needs a full Claude Code restart."
+    },
+    "unity": {
+      "description": "Unity Technologies' agent plugin (beta). Only useful if you work on Unity projects.",
+      "marketplaces": [
+        {
+          "name": "unity-agent-plugin",
+          "repo": "Unity-Technologies/unity-agent-plugin"
+        }
+      ],
+      "plugins": [
+        "unity@unity-agent-plugin"
+      ],
+      "manual": "The unity plugin needs a Unity project (and the Unity MCP package) to do anything."
+    },
+    "github-mcp": {
+      "description": "GitHub's hosted MCP server (issues, PRs, code search). You create a GitHub token and set it as an environment variable yourself.",
+      "mcp": [
+        {
+          "name": "github",
+          "transport": "http",
+          "url": "https://api.githubcopilot.com/mcp/",
+          "live": false,
+          "headers": {
+            "Authorization": "Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}"
+          }
+        }
+      ],
+      "manual": "github-mcp needs a GitHub token that you create and keep yourself. Create one with only the access you want Claude to have (github.com/settings/personal-access-tokens), then run this in your own PowerShell window, not in Claude: setx GITHUB_PERSONAL_ACCESS_TOKEN \"paste-your-token-here\"  and restart Claude Code. This setup never sees or stores the token."
+    },
+    "statusline": {
+      "description": "Pace-aware status line from github.com/TheDyXer/claude-statusline (Windows, PowerShell).",
+      "windows_only": true,
+      "source": {
+        "repo": "TheDyXer/claude-statusline",
+        "commit": "5b0cd47b5100b0bc207697d02af93095f80a27ed",
+        "file": "statusline.ps1",
+        "sha256": "6d66292b58049344bd7b808f136195b4add42492bc3eb927e2667e57c0ce8a14"
+      },
+      "manual": "The status line appears after a restart. To update it later, use the update prompt in the claude-statusline README."
+    },
+    "model-prefs": {
+      "description": "Default model Sonnet with high-effort settings. Check these match what your plan offers.",
+      "settings": [
+        [
+          "model"
+        ],
+        [
+          "modelSettings"
+        ]
+      ],
+      "manual": "model-prefs set Sonnet with xhigh effort as defaults. Change them with /model if your plan doesn't offer them."
+    },
+    "advisor": {
+      "description": "Advisor model setting plus a CLAUDE.md rule telling Claude to consult the advisor before multi-step work and before finishing. Needs a plan that includes the advisor.",
+      "settings": [
+        [
+          "advisorModel"
+        ]
+      ],
+      "claude_md": "config/advisor-block.md",
+      "manual": "The advisor rule assumes the advisor is available. If it isn't on your plan, remove the claude-code-setup block from CLAUDE.md."
+    }
+  },
+  "scan": {
+    "ignore_dirs": [
+      ".git",
+      "docs",
+      "__pycache__",
+      "node_modules",
+      ".claude"
+    ],
+    "allow": [
+      {
+        "file": "config/skills/ui-ux-pro-max/data/stacks/avalonia\\.csv",
+        "label": "windows-user-path"
+      },
+      {
+        "file": "config/skills/ui-ux-pro-max/data/stacks/javafx\\.csv",
+        "label": "unix-home-path"
+      }
+    ]
+  }
+}

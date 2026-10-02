@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+docs/
+.claude/
+.scan-private*
+*.bak*
+.env*

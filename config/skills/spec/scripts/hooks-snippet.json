@@ -1,0 +1,26 @@
+{
+  "_comment": "spec skill 用 hook スニペット。skill は hook を自己インストールできない — 有効化は本人が ~/.claude/settings.json の hooks に下記エントリを貼る (PreToolUse exit-2 ブロックは既知バグ #24327 回避のため不採用。全て非ブロッキング)。",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.claude/skills/spec/scripts/spec-lint.sh\" --hook"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.claude/skills/spec/scripts/spec-lint.sh\" --session-start"
+          }
+        ]
+      }
+    ]
+  }
+}
